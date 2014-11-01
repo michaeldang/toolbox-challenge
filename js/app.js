@@ -4,6 +4,10 @@
 "use strict";
 var tiles = [];
 var idx;
+var remaining = 16;
+var missed = 0;
+var matched = 0;
+var previousImg = null;
 for (idx = 1; idx <= 32; idx++) {
     tiles.push({
         tileNum: idx,
@@ -54,7 +58,22 @@ $(document).ready(function () {
         $('#game-board img').click(function () {
             var clickedImg = $(this);
             var tile = clickedImg.data('tile');
-            flipTile(tile, clickedImg);
+            if (!tile.flipped) {
+                flipTile(tile, clickedImg);
+                if (previousImg != null) {
+                    var previousTile = previousImg.data('tile');
+                    if (previousTile.src == tile.src) {
+                        remaining -= 2;
+                        console.log("same image");
+                    } else {
+                        flipTile(tile, clickedImg);
+                        flipTile(previousTile, previousImg);
+                    }
+                    previousImg = null;
+                } else {
+                    previousImg = clickedImg;
+                }
+            }
         });
     }); //start game button clicked
 });  // document ready function
