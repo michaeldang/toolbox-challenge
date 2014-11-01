@@ -4,11 +4,10 @@
 "use strict";
 var tiles = [];
 var idx;
-var numPairs = 8;
-var remainingPairs;
+var remainingNumPairs;
 var missed = 0;
-var matched = 0;
 var previousImg = null;
+var detectClick = true;
 for (idx = 1; idx <= 32; idx++) {
     tiles.push({
         tileNum: idx,
@@ -24,7 +23,7 @@ $(document).ready(function () {
         console.log('start game button clicked!');
         tiles = _.shuffle(tiles);
         var selectedTiles = tiles.slice(0, 8);
-        remainingPairs = selectedTiles.length;
+        remainingNumPairs = selectedTiles.length;
         var tilePairs = [];
         _.forEach(selectedTiles, function(tile) {
             tilePairs.push(tile);
@@ -58,25 +57,29 @@ $(document).ready(function () {
         }, 1000);
 
         $('#game-board img').click(function () {
-            var clickedImg = $(this);
-            var tile = clickedImg.data('tile');
-            if (!tile.flipped) {
-                flipTile(tile, clickedImg);
-                if (previousImg != null) {
-                    var previousTile = previousImg.data('tile');
-                    if (previousTile.src == tile.src) {
-                        remainingPairs -= 2;
-                        previousImg = null;
-                    } else {
-                        window.setTimeout(function() {
-                            flipTile(tile, clickedImg);
-                            flipTile(previousTile, previousImg);
+            if(detectClick) {
+                var clickedImg = $(this);
+                var tile = clickedImg.data('tile');
+                if (!tile.flipped) {
+                    flipTile(tile, clickedImg);
+                    if (previousImg != null) {
+                        var previousTile = previousImg.data('tile');
+                        if (previousTile.src == tile.src) {
+                            remainingNumPairs--;
                             previousImg = null;
-                        }, 1000);
-                    }
+                        } else {
+                            detectClick = false;
+                            window.setTimeout(function() {
+                                flipTile(tile, clickedImg);
+                                flipTile(previousTile, previousImg);
+                                previousImg = null;
+                                detectClick = true;
+                            }, 1000);
 
-                } else {
-                    previousImg = clickedImg;
+                        }
+                    } else {
+                        previousImg = clickedImg;
+                    }
                 }
             }
         });
