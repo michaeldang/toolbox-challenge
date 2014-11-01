@@ -66,7 +66,7 @@ function flipTile(tile, img) {
         } else {
             img.attr('src', tile.src);
         }
+        tile.flipped = !tile.flipped;
+        img.fadeIn(100);
     });
-    tile.flipped = !tile.flipped;
-    img.fadeIn(100);
 }
