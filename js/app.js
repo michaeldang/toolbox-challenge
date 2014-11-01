@@ -4,7 +4,8 @@
 "use strict";
 var tiles = [];
 var idx;
-var remaining = 16;
+var numPairs = 8;
+var remainingPairs;
 var missed = 0;
 var matched = 0;
 var previousImg = null;
@@ -23,6 +24,7 @@ $(document).ready(function () {
         console.log('start game button clicked!');
         tiles = _.shuffle(tiles);
         var selectedTiles = tiles.slice(0, 8);
+        remainingPairs = selectedTiles.length;
         var tilePairs = [];
         _.forEach(selectedTiles, function(tile) {
             tilePairs.push(tile);
@@ -63,13 +65,16 @@ $(document).ready(function () {
                 if (previousImg != null) {
                     var previousTile = previousImg.data('tile');
                     if (previousTile.src == tile.src) {
-                        remaining -= 2;
-                        console.log("same image");
+                        remainingPairs -= 2;
+                        previousImg = null;
                     } else {
-                        flipTile(tile, clickedImg);
-                        flipTile(previousTile, previousImg);
+                        window.setTimeout(function() {
+                            flipTile(tile, clickedImg);
+                            flipTile(previousTile, previousImg);
+                            previousImg = null;
+                        }, 1000);
                     }
-                    previousImg = null;
+
                 } else {
                     previousImg = clickedImg;
                 }
