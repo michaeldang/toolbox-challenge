@@ -78,6 +78,11 @@ function runGame() {
                     if (previousTile.src == tile.src) {
                         remainingNumPairs--;
                         previousImg = null;
+                        if (remainingNumPairs == 0) {
+                            window.setTimeout(function() {
+                                window.alert("( ͡ᵔ ͜ʖ ͡ᵔ ) You win! ( ͡ᵔ ͜ʖ ͡ᵔ )");
+                            }, 250);
+                        }
                     } else {
                         detectClick = false;
                         missed++;
