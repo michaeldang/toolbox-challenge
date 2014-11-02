@@ -35,35 +35,7 @@ $(document).ready(function () {
             $('#elapsed-seconds').text(elapsedSeconds + ' seconds');
         }, 1000);
 
-        $('#game-board img').click(function () {
-            if(detectClick) {
-                var clickedImg = $(this);
-                var tile = clickedImg.data('tile');
-                if (!tile.flipped) {
-                    flipTile(tile, clickedImg);
-                    if (previousImg != null) {
-                        var previousTile = previousImg.data('tile');
-                        if (previousTile.src == tile.src) {
-                            remainingNumPairs--;
-                            previousImg = null;
-                        } else {
-                            detectClick = false;
-                            missed++;
-                            window.setTimeout(function() {
-                                flipTile(tile, clickedImg);
-                                flipTile(previousTile, previousImg);
-                                previousImg = null;
-                                detectClick = true;
-                            }, 1000);
-
-                        }
-                    } else {
-                        previousImg = clickedImg;
-                    }
-                }
-            }
-            updateGameInfo();
-        });
+        runGame();
     }); //start game button clicked
 });  // document ready function
 
@@ -92,6 +64,38 @@ function resetAllVariables() {
     previousImg = null;
     remainingNumPairs = totalNumPairs;
     window.clearInterval(gameTimer);
+}
+
+function runGame() {
+    $('#game-board img').click(function () {
+        if(detectClick) {
+            var clickedImg = $(this);
+            var tile = clickedImg.data('tile');
+            if (!tile.flipped) {
+                flipTile(tile, clickedImg);
+                if (previousImg != null) {
+                    var previousTile = previousImg.data('tile');
+                    if (previousTile.src == tile.src) {
+                        remainingNumPairs--;
+                        previousImg = null;
+                    } else {
+                        detectClick = false;
+                        missed++;
+                        window.setTimeout(function() {
+                            flipTile(tile, clickedImg);
+                            flipTile(previousTile, previousImg);
+                            previousImg = null;
+                            detectClick = true;
+                        }, 1000);
+
+                    }
+                } else {
+                    previousImg = clickedImg;
+                }
+            }
+        }
+        updateGameInfo();
+    });
 }
 
 function buildBoard() {
