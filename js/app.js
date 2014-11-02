@@ -21,39 +21,10 @@ console.log(tiles);
 
 $(document).ready(function () {
     $('#start-game').click(function() {
-        $('#game-board').empty();
-        missed = 0;
-        detectClick = true;
-        previousImg = null;
-        console.log('start game button clicked!');
-        tiles = _.shuffle(tiles);
-        var selectedTiles = tiles.slice(0, totalNumPairs);
-        remainingNumPairs = selectedTiles.length;
+        resetAllVariables();
         updateGameInfo();
-        var tilePairs = [];
-        _.forEach(selectedTiles, function(tile) {
-            tilePairs.push(tile);
-            tilePairs.push(_.clone(tile));
-        });
-        tilePairs = _.shuffle(tilePairs);
-        var gameBoard = $('#game-board');
-        var row = $(document.createElement('div'));
-        var img;
-        _.forEach(tilePairs, function(tile, elemIndex) {
-            if (elemIndex > 0 && elemIndex % 4 == 0) {
-                gameBoard.append(row);
-                row = $(document.createElement('div'));
-            }
-            img = $(document.createElement('img'));
-            img.attr({
-                src: 'img/tile-back.png',
-                alt: 'tile ' + tile.tileNum
-            });
-            img.data('tile', tile);
-            row.append(img);
-        });
-        gameBoard.append(row);
-
+        buildBoard();
+        
         //get starting milliseconds
         var startTime = Date.now();
         window.setInterval(function() {
@@ -110,4 +81,40 @@ function flipTile(tile, img) {
         tile.flipped = !tile.flipped;
         img.fadeIn(100);
     });
+}
+
+function resetAllVariables() {
+    $('#game-board').empty();
+    missed = 0;
+    detectClick = true;
+    previousImg = null;
+    remainingNumPairs = totalNumPairs;
+}
+
+function buildBoard() {
+    tiles = _.shuffle(tiles);
+    var selectedTiles = tiles.slice(0, totalNumPairs);
+    var tilePairs = [];
+    _.forEach(selectedTiles, function(tile) {
+        tilePairs.push(tile);
+        tilePairs.push(_.clone(tile));
+    });
+    tilePairs = _.shuffle(tilePairs);
+    var gameBoard = $('#game-board');
+    var row = $(document.createElement('div'));
+    var img;
+    _.forEach(tilePairs, function(tile, elemIndex) {
+        if (elemIndex > 0 && elemIndex % 4 == 0) {
+            gameBoard.append(row);
+            row = $(document.createElement('div'));
+        }
+        img = $(document.createElement('img'));
+        img.attr({
+            src: 'img/tile-back.png',
+            alt: 'tile ' + tile.tileNum
+        });
+        img.data('tile', tile);
+        row.append(img);
+    });
+    gameBoard.append(row);
 }
