@@ -4,8 +4,9 @@
 "use strict";
 var tiles = [];
 var idx;
+var totalNumPairs = 8;
 var remainingNumPairs;
-var missed = 0;
+var missed;
 var previousImg = null;
 var detectClick = true;
 for (idx = 1; idx <= 32; idx++) {
@@ -20,10 +21,15 @@ console.log(tiles);
 
 $(document).ready(function () {
     $('#start-game').click(function() {
+        $('#game-board').empty();
+        missed = 0;
+        detectClick = true;
+        previousImg = null;
         console.log('start game button clicked!');
         tiles = _.shuffle(tiles);
-        var selectedTiles = tiles.slice(0, 8);
+        var selectedTiles = tiles.slice(0, totalNumPairs);
         remainingNumPairs = selectedTiles.length;
+        updateGameInfo();
         var tilePairs = [];
         _.forEach(selectedTiles, function(tile) {
             tilePairs.push(tile);
@@ -69,6 +75,7 @@ $(document).ready(function () {
                             previousImg = null;
                         } else {
                             detectClick = false;
+                            missed++;
                             window.setTimeout(function() {
                                 flipTile(tile, clickedImg);
                                 flipTile(previousTile, previousImg);
@@ -82,9 +89,16 @@ $(document).ready(function () {
                     }
                 }
             }
+            updateGameInfo();
         });
     }); //start game button clicked
 });  // document ready function
+
+function updateGameInfo() {
+    $('#wrong-matches').text(" " + missed);
+    $('#matches-left').text(" " + remainingNumPairs);
+    $('#matches-made').text(" " + (totalNumPairs - remainingNumPairs));
+}
 
 function flipTile(tile, img) {
     img.fadeOut(100, function() {
