@@ -7,8 +7,10 @@ var idx;
 var totalNumPairs = 8;
 var remainingNumPairs;
 var missed;
-var previousImg = null;
-var detectClick = true;
+var previousImg;
+var detectClick;
+var gameTimer;
+
 for (idx = 1; idx <= 32; idx++) {
     tiles.push({
         tileNum: idx,
@@ -24,10 +26,10 @@ $(document).ready(function () {
         resetAllVariables();
         updateGameInfo();
         buildBoard();
-        
+
         //get starting milliseconds
         var startTime = Date.now();
-        window.setInterval(function() {
+        gameTimer = window.setInterval(function() {
             var elapsedSeconds = (Date.now() - startTime) / 1000;
             elapsedSeconds = Math.floor(elapsedSeconds);
             $('#elapsed-seconds').text(elapsedSeconds + ' seconds');
@@ -89,6 +91,7 @@ function resetAllVariables() {
     detectClick = true;
     previousImg = null;
     remainingNumPairs = totalNumPairs;
+    window.clearInterval(gameTimer);
 }
 
 function buildBoard() {
