@@ -8,14 +8,17 @@
     </head>
     <body>
         <h1>Memory!</h1>
-        <p align="center"><button id="start-game">Start New Game</button></p>
+        <p align="center">
+            <button id="start-game">Start New Game</button>
+            <button id="instructions">How to Play!</button>
+        </p>
         <div class="container row">
             <div class="col-sm-3">Elapsed Time: <span id="elapsed-seconds"></span></div>
             <div class="col-sm-3">Wrong Matches: <span id="wrong-matches"></span></div>
             <div class="col-sm-3">Matches Left: <span id="matches-left"></span></div>
             <div class="col-sm-3">Matches Made: <span id="matches-made"></span></div>
         </div>
-        <div id="game-board"></div>
+        <div align="center" id="game-board"></div>
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
         <script src="js/app.js"></script>

@@ -22,6 +22,10 @@ for (idx = 1; idx <= 32; idx++) {
 console.log(tiles);
 
 $(document).ready(function () {
+    $('#instructions').click(function () {
+        window.alert("Click a tile to reveal its image.\nClick two tiles to match them.\nMatch all images to win!");
+    });
+
     $('#start-game').click(function() {
         resetAllVariables();
         updateGameInfo();
